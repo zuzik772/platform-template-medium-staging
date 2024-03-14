@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Todo } from '@prisma/client'
 
 import { updateTodo } from './lib/actions'
+import { use } from 'chai'
 
 type Props = {
   todo: Todo
@@ -14,18 +15,18 @@ type Props = {
 
 const ListItem: FC<Props> = ({ todo }) => {
   const [completed, setCompleted] = useState(todo.completed)
-  const icon = todo.completed ? MdCheckCircle : MdPanoramaFishEye
-
+  const icon = completed ? MdCheckCircle : MdPanoramaFishEye
   async function toggleTodoCompletion(todo: Todo) {
     try {
       const updated = await updateTodo(todo.id, {
         ...todo,
-        completed: !todo.completed,
+        completed: !completed,
       })
       console.log('Updated todo:', updated)
+      setCompleted(!completed) // Update the state after successful update
     } catch (error) {
       console.error('Error updating todo:', error)
-      setCompleted(todo.completed)
+      setCompleted(!completed) // Revert the state in case of error
     }
   }
 
@@ -37,14 +38,6 @@ const ListItem: FC<Props> = ({ todo }) => {
         onClick={() => toggleTodoCompletion(todo)}
       />
 
-      {/* <Link href={`/todo/${todo.id}`}>{todo.text}</Link> */}
-      {/* <Checkbox
-        defaultChecked
-        checked={todo.completed}
-        onChange={(e) => {
-          updateTodo({ ...todo, completed: e.target.checked })
-        }}
-      ></Checkbox> */}
       {todo.text}
     </ChakraListItem>
   )
