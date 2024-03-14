@@ -18,10 +18,28 @@ const HomePage: FC<NextPage> = () => {
       <Text mt={10} fontSize='20'>
         Menu
       </Text>
-      <Flex alignItems='center'>
-        <MdLogin style={{ marginRight: '5px' }} />
+      <Flex
+        alignItems='center'
+        justifyContent='space-between'
+        p={4}
+        bg='gray.50'
+        borderRadius='md'
+        boxShadow='sm'
+      >
         <Link href='/login' passHref>
-          Login
+          <Box
+            as='a'
+            marginRight='5px'
+            color='blue.500'
+            _hover={{ textDecoration: 'underline' }}
+          >
+            Login
+          </Box>
+        </Link>
+        <Link href='/signup' passHref>
+          <Box as='a' color='blue.500' _hover={{ textDecoration: 'underline' }}>
+            Sign up
+          </Box>
         </Link>
       </Flex>
       <Flex alignItems='center' mb={10}>
