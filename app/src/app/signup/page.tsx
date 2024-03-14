@@ -1,4 +1,5 @@
 'use client'
+import BackLink from '@/components/common/BackLink'
 import {
   Box,
   Button,
@@ -32,6 +33,7 @@ const SignUpPage = () => {
 
   return (
     <Box width='full' maxW='md' mx='auto' mt={5} p={4} boxShadow='md'>
+      <BackLink />
       <Box textAlign='center' mb={5}>
         <h1>Sign Up</h1>
       </Box>
