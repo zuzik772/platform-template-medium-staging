@@ -18,5 +18,6 @@
   },
   "pre-push": [
     "check:code"
-  ]
+  ],
+  "packageManager": "yarn@4.1.1"
 }
