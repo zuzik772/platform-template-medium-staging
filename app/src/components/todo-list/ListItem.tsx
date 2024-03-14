@@ -2,8 +2,9 @@
 
 import { FC, useState } from 'react'
 import { MdCheckCircle, MdPanoramaFishEye } from 'react-icons/md'
-import { ListItem as ChakraListItem, ListIcon } from '@chakra-ui/react'
+import { ListItem as ChakraListItem, Flex, ListIcon } from '@chakra-ui/react'
 import { Todo } from '@prisma/client'
+import { FaArrowRight } from 'react-icons/fa'
 
 import { updateTodo } from './lib/actions'
 
@@ -11,6 +12,9 @@ type Props = {
   todo: Todo
 }
 
+const handleClick = (todo: Todo) => {
+  window.location.href = `/todo/${todo.id}`
+}
 const ListItem: FC<Props> = ({ todo }) => {
   const [completed, setCompleted] = useState(todo.completed)
   const icon = completed ? MdCheckCircle : MdPanoramaFishEye
@@ -39,12 +43,20 @@ const ListItem: FC<Props> = ({ todo }) => {
 
   return (
     <ChakraListItem>
-      <ListIcon
-        as={icon}
-        color='green.500'
-        onClick={() => toggleTodoCompletion(todo)}
-      />
-      {todo.text}
+      <Flex
+        align='center'
+        ml={2}
+        cursor='pointer'
+        _hover={{ color: 'blue.500' }}
+      >
+        <ListIcon
+          as={icon}
+          color='green.500'
+          onClick={() => toggleTodoCompletion(todo)}
+        />
+        {todo.text}
+        <FaArrowRight onClick={() => handleClick(todo)}></FaArrowRight>
+      </Flex>
     </ChakraListItem>
   )
 }
