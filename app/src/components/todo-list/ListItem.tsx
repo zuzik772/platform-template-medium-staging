@@ -2,10 +2,15 @@
 
 import { FC, useState } from 'react'
 import { MdCheckCircle, MdPanoramaFishEye } from 'react-icons/md'
-import { ListItem as ChakraListItem, Flex, ListIcon } from '@chakra-ui/react'
+import {
+  Box,
+  ListItem as ChakraListItem,
+  Flex,
+  ListIcon,
+} from '@chakra-ui/react'
 import { Todo } from '@prisma/client'
 import { FaArrowRight } from 'react-icons/fa'
-
+import { Text } from '@chakra-ui/react'
 import { updateTodo } from './lib/actions'
 
 type Props = {
@@ -48,14 +53,22 @@ const ListItem: FC<Props> = ({ todo }) => {
         ml={2}
         cursor='pointer'
         _hover={{ color: 'blue.500' }}
+        p={4}
+        borderRadius='md'
+        bg='gray.50'
+        boxShadow='sm'
       >
         <ListIcon
           as={icon}
           color='green.500'
           onClick={() => toggleTodoCompletion(todo)}
+          mr={2}
         />
-        {todo.text}
-        <FaArrowRight onClick={() => handleClick(todo)}></FaArrowRight>
+
+        <Text fontSize='lg' fontWeight='medium' flex={1}>
+          {todo.text}
+        </Text>
+        <Box as={FaArrowRight} onClick={() => handleClick(todo)} />
       </Flex>
     </ChakraListItem>
   )
