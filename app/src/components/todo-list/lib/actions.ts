@@ -36,6 +36,7 @@ export async function updateTodo(id: number, data: TodoUpdateBody) {
     })
 
     console.log(`Todo with ID ${id} updated successfully:`, updatedTodo)
+    return updatedTodo
   } catch (error) {
     console.error('Error updating todo:', error)
   }

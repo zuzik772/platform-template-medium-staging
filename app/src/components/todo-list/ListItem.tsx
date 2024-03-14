@@ -2,16 +2,11 @@
 
 import { FC, useEffect, useState } from 'react'
 import { MdCheckCircle, MdPanoramaFishEye } from 'react-icons/md'
-import {
-  ListItem as ChakraListItem,
-  Checkbox,
-  ListIcon,
-} from '@chakra-ui/react'
+import { ListItem as ChakraListItem, ListIcon } from '@chakra-ui/react'
 import Link from 'next/link'
 import { Todo } from '@prisma/client'
-import axios from 'axios'
-import { set } from 'lodash'
-import { use } from 'chai'
+
+import { updateTodo } from './lib/actions'
 
 type Props = {
   todo: Todo
@@ -20,26 +15,17 @@ type Props = {
 const ListItem: FC<Props> = ({ todo }) => {
   const [completed, setCompleted] = useState(todo.completed)
   const icon = todo.completed ? MdCheckCircle : MdPanoramaFishEye
-  console.log('here', todo)
 
-  // async function updateTodo(todo: Todo) {
-  //   const updated = {
-  //     ...todo,
-  //     completed: !todo.completed,
-  //   }
-  //   setCompleted((prevState) => !prevState)
-  //   console.log('updated', updated)
-  // }
-
-  async function updateTodo(todoId: number) {
-    console.log('todoid ', todoId)
+  async function toggleTodoCompletion(todo: Todo) {
     try {
-      const response = await axios.put(`/api/todos/${todoId}`, {
-        completed: !completed,
+      const updated = await updateTodo(todo.id, {
+        ...todo,
+        completed: !todo.completed,
       })
-      setCompleted(response.data.completed)
+      console.log('Updated todo:', updated)
     } catch (error) {
       console.error('Error updating todo:', error)
+      setCompleted(todo.completed)
     }
   }
 
@@ -48,13 +34,17 @@ const ListItem: FC<Props> = ({ todo }) => {
       <ListIcon
         as={icon}
         color='green.500'
-        onClick={() => {
-          updateTodo(todo.id)
-        }}
+        onClick={() => toggleTodoCompletion(todo)}
       />
 
       {/* <Link href={`/todo/${todo.id}`}>{todo.text}</Link> */}
-      {/* <Checkbox defaultChecked>Checkbox</Checkbox> */}
+      {/* <Checkbox
+        defaultChecked
+        checked={todo.completed}
+        onChange={(e) => {
+          updateTodo({ ...todo, completed: e.target.checked })
+        }}
+      ></Checkbox> */}
       {todo.text}
     </ChakraListItem>
   )
