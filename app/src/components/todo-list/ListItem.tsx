@@ -1,13 +1,11 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { MdCheckCircle, MdPanoramaFishEye } from 'react-icons/md'
 import { ListItem as ChakraListItem, ListIcon } from '@chakra-ui/react'
-import Link from 'next/link'
 import { Todo } from '@prisma/client'
 
 import { updateTodo } from './lib/actions'
-import { use } from 'chai'
 
 type Props = {
   todo: Todo
@@ -18,6 +16,15 @@ const ListItem: FC<Props> = ({ todo }) => {
   const icon = completed ? MdCheckCircle : MdPanoramaFishEye
   async function toggleTodoCompletion(todo: Todo) {
     try {
+      if (
+        completed &&
+        !window.confirm(
+          'This will mark the TODO item as non-completed. Are you sure?',
+        )
+      ) {
+        return
+      }
+
       const updated = await updateTodo(todo.id, {
         ...todo,
         completed: !completed,
@@ -37,7 +44,6 @@ const ListItem: FC<Props> = ({ todo }) => {
         color='green.500'
         onClick={() => toggleTodoCompletion(todo)}
       />
-
       {todo.text}
     </ChakraListItem>
   )
